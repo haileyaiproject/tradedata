@@ -1,0 +1,194 @@
+[
+ {
+  "hs": "847330",
+  "sgg": "이천시",
+  "dir": "exp",
+  "candidates": [
+   {
+    "company": "SK하이닉스 (이천 본사·M14/M16 생산기지)",
+    "why": "이천은 SK하이닉스의 본사 겸 주력 메모리 생산지다. 9월 전국 메모리·SSD 수출 급증 보도와 방향이 같고, 이천에서 이만한 규모로 이 품목을 수출할 곳은 달리 없다.",
+    "confidence": "높음"
+   }
+  ],
+  "note": "9월 전국 반도체 수출은 603억 달러(전년 동월 +263%)로 월간 최고였고, AI 수요에 따른 고부가 제품 판매와 범용 메모리 가격 상승이 원인으로 꼽혔다. SSD 수출은 +532%. 이천 847330의 3배 증가는 이 흐름과 맞는다.",
+  "sources": [
+   "https://www.fnnews.com/news/202610141102058172",
+   "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172289/view?pageIndex=1",
+   "https://dealsite.co.kr/articles/170053"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "851713",
+  "sgg": "수원시",
+  "dir": "imp",
+  "candidates": [
+   {
+    "company": "삼성전자 (수원 본사·디지털시티)",
+    "why": "수입은 납세의무자 주소 기준이라, 베트남·인도 등 해외 공장에서 만든 갤럭시 스마트폰을 들여오는 수입자가 삼성전자 수원 주소로 집계됐을 가능성이 있다. 추정이다.",
+    "confidence": "중간"
+   }
+  ],
+  "note": "9월 전국 휴대폰 수입은 16.7억 달러(+41%)로 고가 완제품 판매가 늘었다. 수원 수입 2배는 이 영향과 9월 신제품 출시 시기가 겹친 결과일 수 있다. 직접 원인은 찾지 못했다.",
+  "sources": [
+   "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172289/view?pageIndex=1",
+   "https://www.inews24.com/view/1992672"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "848620",
+  "sgg": "오산시·화성시",
+  "dir": "exp",
+  "candidates": [
+   {
+    "company": "ASM코리아 (화성 동탄 혁신제조센터)",
+    "why": "화성 동탄에 ALD 증착장비 제조센터를 준공했다는 기사를 확인했다. 화성 쪽 후보이며, 오산 후보는 찾지 못했다.",
+    "confidence": "낮음"
+   }
+  ],
+  "note": "오산시에서 반도체 장비를 만드는 업체는 이번 검색으로 확인하지 못했다. 메모리 투자 확대에 따른 장비 수요 증가가 배경일 수 있다는 추정만 가능하다.",
+  "sources": [
+   "https://www.kyeonggi.com/article/20251208580314"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "930690",
+  "sgg": "과천시",
+  "dir": "exp",
+  "candidates": [
+   {
+    "company": "방위사업청(과천 정부청사) 관련 방산 거래",
+    "why": "방사청이 2017년 과천으로 이전했다. 다만 방사청이 직접 제조·수출하는 곳은 아니어서, 과천 주소의 군수품 수출 신고가 방사청 관련 거래인지는 확인하지 못했다.",
+    "confidence": "낮음"
+   }
+  ],
+  "note": "과천에 제조장이나 본사를 둔 미사일·탄약 업체는 확인하지 못했다. 월평균 약 3,967만 달러가 9월에 0이 된 것은 대형 단건 수출이 월별로 몰린 결과일 가능성이 크다.",
+  "sources": [
+   "https://m.go.seoul.co.kr/news/2016/12/30/20161230014012",
+   "https://www.fnnews.com/news/202402260812421002"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "880212",
+  "sgg": "과천시",
+  "dir": "imp",
+  "candidates": [
+   {
+    "company": "방위사업청(과천 정부청사)",
+    "why": "군용 헬리콥터·항공기 도입은 방사청이 계약 주체인 경우가 많고, 수입은 납세의무자 주소 기준이라 과천으로 잡혔을 가능성이 있다. 실제 신고자가 방사청인지는 확인하지 못했다.",
+    "confidence": "낮음"
+   }
+  ],
+  "note": "월평균 약 2,439만 달러가 9월에 0이 된 것은 항공기 인도 시점이 월별로 불규칙하기 때문일 가능성이 있다. 9~10월 인도 관련 뉴스는 찾지 못했다.",
+  "sources": [
+   "https://m.go.seoul.co.kr/news/2017/01/04/20170104500147"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "852491",
+  "sgg": "파주시",
+  "dir": "exp",
+  "candidates": [
+   {
+    "company": "LG디스플레이 파주 사업장",
+    "why": "파주는 LCD·OLED 생산기지로, 제조장소 기준 디스플레이 모듈 수출 업체로 가장 유력하다. 9월 감소를 직접 확인하는 기사는 없었다.",
+    "confidence": "중간"
+   }
+  ],
+  "note": "경기도 합계가 월평균 6,800만 달러에서 3,100만 달러로 절반이 됐다. 2026년 메모리 부족으로 스마트폰 디스플레이 출하가 줄 것이라는 전망 기사는 있으나, 파주 건을 직접 설명하는 기사는 없었다.",
+  "sources": [
+   "https://telecomlead.com/electronics/amoled-smartphone-display-shipments-to-fall-7-in-2026-as-memory-prices-and-demand-pressures-rise",
+   "https://wccftech.com/dram-shortage-has-caused-smartphone-oled-shipments-to-drop-12-percent/"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "852491",
+  "sgg": "수원시",
+  "dir": "imp",
+  "candidates": [
+   {
+    "company": "삼성전자 (수원 주소지)",
+    "why": "수입은 납세의무자 주소 기준이라, 수원에 주소를 둔 삼성전자가 해외 생산 모듈을 들여오는 경우가 유력하다. 구체적 수입 사실은 확인하지 못했다.",
+    "confidence": "낮음"
+   }
+  ],
+  "note": "월평균 4,721만 달러가 9월 908만 달러로 줄었다. 해외 공장에서 들여오는 모듈 물량이 줄었을 가능성이 있으나 근거 기사는 찾지 못했다. 수원 수출(852491)도 같이 줄었다.",
+  "sources": [
+   "https://wccftech.com/dram-shortage-has-caused-smartphone-oled-shipments-to-drop-12-percent/"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "853720",
+  "sgg": "안양시",
+  "dir": "exp",
+  "candidates": [
+   {
+    "company": "LS일렉트릭",
+    "why": "안양 LS타워가 본사이고 배전반·전력기기를 만든다. 북미 AI 데이터센터와 송배전 시장을 공략하고 있어 9월 수출 급증과 맞는다. 고전압 개폐·보호장치(853590)도 같이 늘었다.",
+    "confidence": "중간"
+   }
+  ],
+  "note": "월평균 약 2,380만 달러에서 5,755만 달러로 2.4배. 북미 데이터센터 전력기기 수요와 대형 프로젝트 선적이 몰린 영향일 수 있으나, 9월 수치를 직접 설명하는 기사는 찾지 못했다.",
+  "sources": [
+   "https://www.hankyung.com/article/202502210211i",
+   "https://www.ajunews.com/view/20260130075546071",
+   "https://www.hellot.net/mobile/article.html?no=112431"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "847981",
+  "sgg": "평택시",
+  "dir": "exp",
+  "candidates": [
+   {
+    "company": "케이지에이(KGA)",
+    "why": "평택 브레인시티 산단에 700억 원을 투자해 이차전지 전극 공정 장비 신공장을 지었고 2025년 말~2026년 가동 예정이었다. 전극 공정 장비가 이 품목으로 잡힐 수 있으나, 9월 출하를 확인한 기사는 없다.",
+    "confidence": "중간"
+   }
+  ],
+  "note": "신공장 가동과 맞물린 이차전지 장비의 일회성 대형 출하가 가장 그럴듯하지만, 9월 수출 확대를 직접 설명하는 뉴스는 찾지 못했다.",
+  "sources": [
+   "https://www.finance-scope.com/article/view/scp202508180011",
+   "https://www.metroseoul.co.kr/article/20241110500106",
+   "https://kidd.co.kr/news/245697"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "853529",
+  "sgg": "성남시",
+  "dir": "exp",
+  "candidates": [],
+  "note": "성남에서 1,000V 초과 차단기를 만드는 공장을 확인하지 못했다. 주요 차단기 제조사(효성중공업, LS일렉트릭 등)의 공장은 창원 등 다른 지역이다. 성남에 본사·연구소 주소만 둔 업체의 수출이 잡혔을 가능성이 있다.",
+  "sources": [
+   "https://knnews.co.kr/news/articleView.php?idxno=1166139"
+  ],
+  "region": "경기도"
+ },
+ {
+  "hs": "382600",
+  "sgg": "시흥시",
+  "dir": "exp",
+  "candidates": [
+   {
+    "company": "DS단석",
+    "why": "시화공단에 폐식용유 기반 바이오디젤 공장(연 약 6만 톤)이 있고, 한국 바이오디젤 수출의 약 70%를 차지하는 최대 수출사다. 2026년 상반기 수출이 전년 대비 65% 늘었다.",
+    "confidence": "높음"
+   }
+  ],
+  "note": "상반기 수출 급증 흐름이 이어진 것으로 보이며, 2025년 12월 시흥 공장에 도입한 효소 공정으로 저급 원료도 쓸 수 있게 됐다. 9월 한 달 급증의 직접 원인(대형 선적 등)을 밝힌 기사는 찾지 못했다.",
+  "sources": [
+   "https://m.etnews.com/20230629000149",
+   "https://www.mt.co.kr/article/2026082608239642034",
+   "https://www.qcintel.com/biofuels/article/south-korea-uco-exports-at-7-mth-high-biodiesel-exports-at-record-66852.html"
+  ],
+  "region": "경기도"
+ }
+]

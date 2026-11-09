@@ -1,0 +1,287 @@
+<title>전국 수출입 급변 품목</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: national overview table on top, then a region picker; below it the chosen region's tiles, flagged-item cards, company candidates, and a secondary table */
+:root{
+  --bg:#f7f7f4; --surface:#ffffff; --fg:#1d1f1a; --muted:#6b6f66; --line:#dcded6;
+  --accent:#2b5f8f; --accent-soft:#e3edf6; --up:#1f7a4d; --up-soft:#e2f2e9; --down:#b23a2e; --down-soft:#f8e5e2;
+  --font:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#15171a; --surface:#1e2126; --fg:#e8e9e4; --muted:#9a9e95; --line:#32363c; --accent:#8fb6dc; --accent-soft:#24313e; --up:#6cc497; --up-soft:#1d3328; --down:#e8877a; --down-soft:#3d2320; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#15171a; --surface:#1e2126; --fg:#e8e9e4; --muted:#9a9e95; --line:#32363c; --accent:#8fb6dc; --accent-soft:#24313e; --up:#6cc497; --up-soft:#1d3328; --down:#e8877a; --down-soft:#3d2320; color-scheme:dark }
+body{background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.55;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1{font-size:1.6rem;font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:1.1rem;font-weight:700;margin:0 0 10px}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.sub{color:var(--muted);font-size:.92rem;margin-top:6px;max-width:68ch}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.tile .k{font-size:.78rem;color:var(--muted)}
+.tile .v{font-size:1.5rem;font-weight:700;line-height:1.2;margin-top:4px}
+.tile .d{font-size:.8rem;color:var(--muted);margin-top:4px}
+.tile svg{display:block;width:100%;height:36px;margin-top:8px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--fg);padding:6px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.seg button:disabled{color:var(--muted);cursor:default;opacity:.6}
+input[type=search]{font:inherit;font-size:.9rem;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);min-width:200px;flex:1}
+.count{font-size:.85rem;color:var(--muted);margin-left:auto}
+.list{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px 24px}
+.card.down{border-left:4px solid var(--down)} .card.up{border-left:4px solid var(--up)}
+.card .head{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;min-width:0}
+.hs{font-family:var(--mono);font-weight:500;color:var(--accent)}
+.name{font-weight:700;font-size:1.02rem}
+.chain{grid-column:1/-1;font-size:.8rem;color:var(--muted);margin-top:-6px;overflow-wrap:anywhere}
+.chip{font-size:.72rem;padding:2px 8px;border-radius:999px;font-weight:500;letter-spacing:.02em;white-space:nowrap}
+.chip.exp{background:var(--accent-soft);color:var(--accent)} .chip.imp{background:var(--line);color:var(--fg)}
+.chip.up{background:var(--up-soft);color:var(--up)} .chip.down{background:var(--down-soft);color:var(--down)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.88rem;align-content:start}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right}
+.kv dd.big{font-weight:700;font-size:1.05rem}
+.spark{min-width:0}
+.spark svg{display:block;width:100%;height:72px}
+.spark .cap{font-size:.74rem;color:var(--muted);display:flex;justify-content:space-between;margin-top:2px}
+.regions{grid-column:1/-1;min-width:0}
+.regions .t{font-size:.78rem;color:var(--muted);margin-bottom:6px}
+.bar{display:grid;grid-template-columns:5.5em minmax(0,1fr) 7em;gap:8px;align-items:center;font-size:.84rem;padding:2px 0}
+.bar .tr{height:10px;background:var(--line);border-radius:2px;position:relative;overflow:hidden}
+.bar .fl{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:2px}
+.bar .av{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--fg);opacity:.6}
+.bar .r{text-align:right;color:var(--muted)} .bar .r b{color:var(--fg);font-weight:500}
+.bar .l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:.76rem;color:var(--muted);font-weight:500;letter-spacing:.04em}
+td.r,th.r{text-align:right}
+tr.pick{cursor:pointer} tr.pick:hover td{background:var(--accent-soft)} tr.pick.on td{background:var(--accent-soft);font-weight:500}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.note{font-size:.88rem;max-width:70ch;color:var(--fg)}
+.note p{margin:0 0 8px}
+.note ul{margin:4px 0 8px;padding-left:1.2em}
+.legend{font-size:.76rem;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.legend i{display:inline-block;width:12px;height:8px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.pend{font-size:.84rem;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:10px 14px}
+@media (max-width:640px){ .card{grid-template-columns:1fr} .bar{grid-template-columns:5em minmax(0,1fr) 6em} }
+@media (prefers-reduced-motion:no-preference){ .fl{transition:width .3s ease} }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">관세청 수출입무역통계</div>
+    <h1>전국 수출입 급변 품목</h1>
+    <p class="sub" id="intro"></p>
+  </header>
+
+  <section id="early-sec" hidden>
+    <h2 id="early-h2">조기 신호 (10일 단위 전국 잠정치)</h2>
+    <p class="sub" style="margin-bottom:10px">관세청이 11일·21일·다음 달 1일에 내는 전국 잠정치입니다. 지역은 안 나오지만, 어느 품목이 움직였는지 먼저 알 수 있어서 15일에 나오는 지역 확정치에서 어디를 볼지 힌트가 됩니다. 비교는 전월·전년의 <b>같은 기간</b>(예: 1~10일끼리)이고, "다른 품목 대비"는 10개 품목 중앙값과 견준 값입니다. 오른쪽 지역 비중은 최근 확정치에서 그 품목(비슷한 HS 코드 묶음)이 시도별로 얼마나 나왔는지 계산한 값입니다.</p>
+    <div class="tbl"><table id="earlytbl"><thead><tr><th>구분</th><th>품목</th><th class="r">이번 기간</th><th class="r">전월 같은 기간 대비</th><th class="r">전년 같은 기간 대비</th><th class="r">다른 품목 대비</th><th id="hint-h">주로 나오는 지역</th></tr></thead><tbody></tbody></table></div>
+    <div class="legend" style="margin-top:8px"><span>굵은 줄 = 다른 품목들보다 전월 대비 ±20% 또는 전년 대비 ±30% 이상 더 움직인 품목. 명절·조업일수처럼 모두에게 같이 생기는 변화는 뺀 것입니다.</span></div>
+  </section>
+
+  <section>
+    <h2>시도별 한눈에 보기</h2>
+    <p class="sub" style="margin-bottom:10px">줄을 누르면 아래에 그 시도의 자세한 내용이 나옵니다.</p>
+    <div class="tbl"><table id="ovtbl"><thead><tr><th>시도</th><th class="r">분석 품목</th><th class="r">수출</th><th class="r">전월 대비</th><th class="r">수입</th><th class="r">튄 품목</th><th>가장 큰 변화</th></tr></thead><tbody></tbody></table></div>
+    <div id="pending" class="pend" hidden></div>
+  </section>
+
+  <section id="region-sec">
+    <div class="controls" style="margin-bottom:16px"><div class="seg" id="rseg" role="group" aria-label="시도 선택"></div></div>
+    <h2 id="r-h2"></h2>
+    <section class="tiles" id="tiles" style="margin-bottom:24px"></section>
+
+    <h2 id="sig-h2">튄 품목</h2>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="수출입 구분">
+        <button id="f-dir-all" aria-pressed="true" data-dir="all">전체</button>
+        <button id="f-dir-exp" aria-pressed="false" data-dir="exp">수출</button>
+        <button id="f-dir-imp" aria-pressed="false" data-dir="imp">수입</button>
+      </div>
+      <div class="seg" role="group" aria-label="방향">
+        <button id="f-mv-all" aria-pressed="true" data-mv="all">상승+하락</button>
+        <button id="f-mv-up" aria-pressed="false" data-mv="up">상승</button>
+        <button id="f-mv-down" aria-pressed="false" data-mv="down">하락</button>
+      </div>
+      <input type="search" id="q" placeholder="품목명, HS코드, 시군구 검색">
+      <span class="count" id="cnt"></span>
+    </div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>최근월 금액</span><span><i style="background:var(--fg);opacity:.6;width:2px"></i>직전월</span></div>
+    <div class="list" id="list"></div>
+
+    <section id="co-sec" hidden style="margin-top:28px">
+      <h2>업체 후보</h2>
+      <p class="sub" style="margin-bottom:10px">금액이 큰 상위 품목에 대해 뉴스·공시·공장 정보를 찾아 붙인 후보입니다. 통계에는 업체명이 없으므로 모두 <b>추정</b>이며, 신뢰도와 근거 링크를 같이 보세요.</p>
+      <div class="list" id="colist"></div>
+    </section>
+
+    <section style="margin-top:28px">
+      <h2>그 밖에 금액 변화가 큰 품목</h2>
+      <p class="sub" style="margin-bottom:10px">위 기준(2배 / 절반)에는 안 걸렸지만, 최근월과 직전월의 차이가 금액으로 큰 순서입니다.</p>
+      <div class="tbl"><table id="bigtbl"><thead><tr><th>HS</th><th>품목</th><th>구분</th><th class="r">최근월</th><th class="r">직전월</th><th class="r">차이</th><th class="r">배율</th><th>주요 시군구</th></tr></thead><tbody></tbody></table></div>
+    </section>
+  </section>
+
+  <section id="hist-sec">
+    <h2>월별 기록</h2>
+    <p class="sub" style="margin-bottom:10px">매달 15일 전후로 전월 확정치가 나오면 다시 돌아서 한 줄씩 쌓입니다.</p>
+    <div class="tbl"><table id="histtbl"><thead><tr><th>기준월</th><th>갱신일</th><th>시도</th><th class="r">분석 품목</th><th class="r">수출 합계</th><th class="r">튄 품목</th><th>가장 큰 변화</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="note">
+    <h2>이 표를 읽는 법</h2>
+    <p><b>데이터 출처</b> 관세청 공공데이터 API 두 가지를 썼습니다. 시도별 품목별 수출입실적으로 각 시도에서 거래되는 HS 6단위 품목을 2→4→6단위로 내려가며 찾고(연간 수출 또는 수입 1천만 달러 미만인 가지는 더 내려가지 않음), 남은 품목만 시군구별 품목별 수출입실적으로 12개월치를 받았습니다.</p>
+    <p><b>튄 품목 기준</b> 최근월 금액이 직전월(직전에 공개된 달)의 2배 이상 또는 0.5배 이하, 두 달 차이가 500만 달러 이상, 두 달 중 하나가 1천만 달러 이상. 세 조건을 모두 만족해야 합니다.</p>
+    <p><b>주의할 점</b></p>
+    <ul>
+      <li>수출은 제조장소, 수입은 납세의무자 주소 기준입니다. 공장이 없는 도심 지역(과천, 서울 등)은 본사 주소로 잡힌 거래가 많습니다.</li>
+      <li>품목 이름 중 "쉬운 이름" 표시가 붙은 것은 읽기 쉽게 제가 바꿔 쓴 것이고, 관세청 분류 원문은 그 아래 작은 글씨로 남겼습니다. 정확한 범위는 원문이 기준입니다.</li>
+      <li>HS 6단위는 품목을 넓게 묶은 것입니다. 2026년 9월부터 시군구 단위에서는 10단위가 공개되지 않습니다.</li>
+      <li>확정치는 매월 15일경 나오며, 정정·취하로 이후 조금 바뀔 수 있습니다. 2026년 7월부터 전남·광주 통합, 전북 코드 변경 등 지역 코드가 바뀌었습니다.</li>
+      <li>한 번 튄 것이 추세인지 일회성(대형 선적, 계약 시점)인지는 다음 달 숫자를 봐야 압니다.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+/*__DATA__*/
+const M = D.months;
+const fmt = n => Math.round(n).toLocaleString('ko-KR');
+const fmtB = n => { // 입력은 천 달러
+  const a = Math.abs(n);
+  if (a >= 1e5) return (n/1e5).toFixed(1).replace(/\.0$/,'') + '억 달러';
+  if (a >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + '백만 달러';
+  return fmt(n) + '천 달러';
+};
+const nice = s => D.names[s.hs] || s.name;
+const avg11 = s => s.slice(0,11).reduce((a,b)=>a+b,0)/11;
+const prevM = M => M[10].replace('.','년 ')+'월';
+const lastM = M => M[11].replace('.','년 ')+'월';
+const ratioTxt = r => r>=99 ? '전월 0 → 신규' : r>=1 ? r.toFixed(1)+'배' : r===0 ? '전월 대비 0 (중단)' : '전월의 '+Math.round(r*100)+'% 수준';
+function spark(series, w=300, h=72, pad=4){
+  const max = Math.max(...series, 1), min = 0;
+  const x = i => pad + i*(w-2*pad)/(series.length-1);
+  const y = v => h - pad - (v-min)/(max-min)*(h-2*pad);
+  const pts = series.map((v,i)=>[x(i),y(v)]);
+  const path = pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const area = path + ' L'+pts[pts.length-1][0].toFixed(1)+' '+(h-pad)+' L'+pts[0][0].toFixed(1)+' '+(h-pad)+' Z';
+  const last = pts[pts.length-1]; const avg = series[series.length-2]; const pv = pts[pts.length-2];
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+    <path d="${area}" fill="var(--accent)" opacity=".12"/>
+    <line x1="${pad}" x2="${w-pad}" y1="${y(avg).toFixed(1)}" y2="${y(avg).toFixed(1)}" stroke="var(--fg)" stroke-opacity=".45" stroke-width="1" stroke-dasharray="3 3"/>
+    <path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${pv[0].toFixed(1)}" cy="${pv[1].toFixed(1)}" r="3" fill="var(--surface)" stroke="var(--fg)" stroke-opacity=".6" stroke-width="1.5"/>
+    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="4" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>
+  </svg>`;
+}
+const endY = D.end.slice(0,4), endM = String(+D.end.slice(4));
+document.getElementById('eyebrow').textContent = `관세청 수출입무역통계 · ${endY}년 ${endM}월분 · ${D.generated} 갱신 · 시도 ${D.regions.length}곳`;
+document.getElementById('intro').innerHTML = `${M[0].replace('.','년 ')}월부터 ${M[11].replace('.','년 ')}월까지 12개월치를 시도마다 HS 6단위 × 시군구 단위로 받아, ${endM}월 금액이 직전에 공개된 달(${+M[10].slice(5)}월) 대비 2배 이상이거나 절반 이하로 떨어진 품목을 골랐습니다. 12개월 흐름과 평균은 참고로 같이 보여줍니다. 금액은 모두 <b>천 달러</b> 단위입니다.`;
+if (D.pending && D.pending.length){ const p=document.getElementById('pending'); p.hidden=false; p.textContent='아직 받지 못한 시도: '+D.pending.join(', ')+' (하루 호출 한도 때문에 다음 실행에서 이어서 받습니다)'; }
+
+// early signals
+if (D.early && D.early.latest){
+  const E = D.early; const sec = document.getElementById('early-sec'); sec.hidden = false;
+  const pl = {'10':'1~10일','20':'1~20일','말':'1일~말일'}[E.latest.p] || E.latest.p;
+  document.getElementById('early-h2').textContent = `조기 신호 · ${E.latest.ym.slice(0,4)}년 ${+E.latest.ym.slice(4)}월 ${pl} 잠정치 (${E.generated} 갱신)`;
+  const pct = v => v===null||v===undefined ? '<span style="color:var(--muted)">—</span>' : `<span style="color:var(--${v>=0?'up':'down'})">${v>=0?'+':''}${Math.round(v*100)}%</span>`;
+  const S = D.shares;
+  if (S) document.getElementById('hint-h').textContent = `어디서 나오나 (${S.end.slice(0,4)}.${S.end.slice(4)} 확정치 비중)`;
+  const hintOf = x => {
+    const e = S && S[x.dir] && S[x.dir][x.item];
+    if (!e) return x.hint;
+    const sido = e.sido.slice(0,3).map(s=>`${s.name} ${Math.round(s.share*100)}%`).join(' · ');
+    const sgg = (e.sgg||[]).slice(0,3).map(s=>`${s.name} ${Math.round(s.share*100)}%`).join(' · ');
+    return sido + (sgg ? `<div style="margin-top:2px">경기 안: ${sgg}</div>` : '');
+  };
+  document.querySelector('#earlytbl tbody').innerHTML = E.signals.map(x=>`<tr style="${x.flag?'font-weight:700':''}"><td><span class="chip ${x.dir}">${x.dir==='exp'?'수출':'수입'}</span></td><td>${x.item}</td><td class="r num">${fmtB(x.cur)}</td><td class="r num">${pct(x.mom)}</td><td class="r num">${pct(x.yoy)}</td><td class="r num">${x.item==='전체'?'<span style="color:var(--muted)">기준</span>':pct(x.rel_yoy)}</td><td style="font-weight:400;color:var(--muted);font-size:.8rem">${hintOf(x)}</td></tr>`).join('');
+}
+// overview
+const ov = document.querySelector('#ovtbl tbody');
+ov.innerHTML = D.regions.map((r,i)=>{
+  const e=r.gg_total.exp[11], ea=r.gg_total.exp[10], im=r.gg_total.imp[11];
+  const t=r.sig[0]; const ups=r.sig.filter(s=>s.delta>0).length;
+  return `<tr class="pick" data-i="${i}"><td><b>${r.name}</b></td><td class="r num">${fmt(r.n_codes)}</td><td class="r num">${fmtB(e)}</td><td class="r num" style="color:var(--${e>=ea?'up':'down'})">${(e/ea).toFixed(2)}배</td><td class="r num">${fmtB(im)}</td><td class="r num">${r.sig.length} (▲${ups} ▼${r.sig.length-ups})</td><td>${t?`${t.allSgg[0]?t.allSgg[0].sgg+' · ':''}${t.hs} ${nice(t)} ${t.dir==='exp'?'수출':'수입'} ${ratioTxt(t.ratio)}`:'—'}</td></tr>`;
+}).join('');
+
+// region picker
+const seg = document.getElementById('rseg');
+seg.innerHTML = D.regions.map((r,i)=>`<button id="r-${r.code}" data-i="${i}" aria-pressed="false">${r.name.replace(/(특별자치도|특별자치시|광역시|특별시|통합특별시)$/,'')}</button>`).join('');
+const state = {dir:'all', mv:'all', q:'', region:0};
+function card(s){
+  const up = s.delta>0;
+  const maxLast = Math.max(...s.allSgg.map(r=>Math.max(r.series[11], r.series[10])),1);
+  const bars = s.allSgg.slice(0,6).map(r=>{
+    const last=r.series[11], avg=r.series[10];
+    return `<div class="bar"><span class="l" title="${r.sgg}">${r.sgg}</span><span class="tr"><span class="fl" style="width:${(last/maxLast*100).toFixed(1)}%"></span><span class="av" style="left:${(avg/maxLast*100).toFixed(1)}%"></span></span><span class="r num"><b>${fmt(last)}</b> / ${fmt(avg)}</span></div>`;
+  }).join('');
+  const top = s.allSgg[0];
+  const share = top && s.delta!==0 ? Math.round((top.series[11]-top.series[10])/s.delta*100) : null;
+  return `<article class="card ${up?'up':'down'}" data-dir="${s.dir}" data-mv="${up?'up':'down'}" data-q="${(s.hs+' '+s.full+' '+s.allSgg.map(r=>r.sgg).join(' ')).toLowerCase()}">
+    <div class="head"><span class="hs">${s.hs}</span><span class="name">${nice(s)}</span>${D.names[s.hs]?'<span class="chip imp" title="관세청 원문은 아래 작은 글씨">쉬운 이름</span>':''}<span class="chip ${s.dir}">${s.dir==='exp'?'수출':'수입'}</span><span class="chip ${up?'up':'down'}">${up?'▲':'▼'} ${ratioTxt(s.ratio)}</span></div>
+    <div class="chain">관세청 분류: ${s.full}</div>
+    <dl class="kv"><dt>${M[11].replace('.','년 ')}월</dt><dd class="big num">${fmt(s.last)}</dd><dt>${prevM(M)}</dt><dd class="num">${fmt(s.prev)}</dd><dt>전월 대비 차이</dt><dd class="num" style="color:var(--${up?'up':'down'})">${up?'+':''}${fmt(s.delta)}</dd><dt>직전 11개월 평균</dt><dd class="num" style="color:var(--muted)">${fmt(s.avg)}</dd>${top?`<dt>가장 많이 움직인 곳</dt><dd><b>${top.sgg}</b>${share!==null?` <span class="num">(변화의 ${share}%)</span>`:''}</dd>`:''}</dl>
+    <div class="spark">${spark(s.series)}<div class="cap"><span>${M[0]}</span><span>${M[11]}</span></div></div>
+    <div class="regions"><div class="t">시군구별 ${endM}월 금액 / ${+M[10].slice(5)}월 금액 (천 달러)</div>${bars}</div>
+  </article>`;
+}
+function showRegion(i){
+  state.region = i; const r = D.regions[i];
+  seg.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed', +b.dataset.i===i?'true':'false'));
+  ov.querySelectorAll('tr').forEach(tr=>tr.classList.toggle('on', +tr.dataset.i===i));
+  document.getElementById('r-h2').textContent = r.name;
+  const T=r.gg_total, eL=T.exp[11], eA=T.exp[10], iL=T.imp[11], iA=T.imp[10], ups=r.sig.filter(s=>s.delta>0).length;
+  document.getElementById('tiles').innerHTML = `
+    <div class="tile"><div class="k">${endM}월 수출 (분석 품목 합계)</div><div class="v num">${fmtB(eL)}</div><div class="d">${+M[10].slice(5)}월 ${fmtB(eA)} · 전월 대비 ${(eL/eA).toFixed(2)}배</div>${spark(T.exp,300,36,3)}</div>
+    <div class="tile"><div class="k">${endM}월 수입 (분석 품목 합계)</div><div class="v num">${fmtB(iL)}</div><div class="d">${+M[10].slice(5)}월 ${fmtB(iA)} · 전월 대비 ${(iL/iA).toFixed(2)}배</div>${spark(T.imp,300,36,3)}</div>
+    <div class="tile"><div class="k">분석한 품목 (HS 6단위)</div><div class="v num">${fmt(r.n_codes)}</div><div class="d">거래 품목 ${fmt(r.hs6count)}개 중 연 1천만 달러 이상</div></div>
+    <div class="tile"><div class="k">${endM}월에 튄 품목</div><div class="v num">${r.sig.length}</div><div class="d"><span style="color:var(--up)">상승 ${ups}</span> · <span style="color:var(--down)">하락 ${r.sig.length-ups}</span></div></div>`;
+  document.getElementById('sig-h2').textContent = `${endM}월에 튄 품목`;
+  document.getElementById('list').innerHTML = r.sig.map(card).join('');
+  apply();
+  // companies for this region
+  const cos = (D.companies||[]).filter(c=>c.region===r.name);
+  document.getElementById('co-sec').hidden = !cos.length;
+  const conf = c => c==='높음'?'up':(c==='낮음'?'down':'imp');
+  document.getElementById('colist').innerHTML = cos.map(c=>{
+    const s = r.sig.find(x=>x.hs===c.hs && x.dir===c.dir);
+    const head = s ? `${nice(s)} · ${s.dir==='exp'?'수출':'수입'} ${ratioTxt(s.ratio)}` : (c.dir==='exp'?'수출':'수입');
+    const cands = (c.candidates||[]).map(k=>`<li><b>${k.company}</b> <span class="chip ${conf(k.confidence)}">신뢰도 ${k.confidence}</span><div style="font-size:.86rem;color:var(--muted)">${k.why}</div></li>`).join('') || '<li style="color:var(--muted)">후보를 찾지 못했습니다.</li>';
+    const srcs = (c.sources||[]).slice(0,5).map((u,i)=>`<a href="${u}" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem;margin-right:10px;overflow-wrap:anywhere">출처 ${i+1}</a>`).join('');
+    return `<article class="card" style="grid-template-columns:1fr"><div class="head"><span class="hs">${c.hs}</span><span class="name">${c.sgg}</span><span style="color:var(--muted);font-size:.9rem">${head}</span></div><ul style="margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px">${cands}</ul>${c.note?`<div style="font-size:.86rem"><b>해석</b> ${c.note}</div>`:''}<div>${srcs}</div></article>`;
+  }).join('');
+  document.querySelector('#bigtbl tbody').innerHTML = r.big.map(b=>`<tr><td class="hs">${b.hs}</td><td>${nice(b)}<div style="font-size:.74rem;color:var(--muted)">${D.names[b.hs]?b.name+' · ':''}${b.full.split(' › ').slice(1,2).join('')}</div></td><td><span class="chip ${b.dir}">${b.dir==='exp'?'수출':'수입'}</span></td><td class="r num">${fmt(b.last)}</td><td class="r num">${fmt(b.prev)}</td><td class="r num" style="color:var(--${b.delta>0?'up':'down'})">${b.delta>0?'+':''}${fmt(b.delta)}</td><td class="r num">${b.ratio.toFixed(2)}</td><td>${b.top.join(', ')}</td></tr>`).join('');
+  if (location.hash.slice(1) !== 'r'+r.code) history.replaceState(null,'','#r'+r.code);
+}
+function apply(){
+  let n=0; const list=document.getElementById('list');
+  for (const el of list.children){
+    const ok = (state.dir==='all'||el.dataset.dir===state.dir) && (state.mv==='all'||el.dataset.mv===state.mv) && (!state.q || el.dataset.q.includes(state.q));
+    el.hidden = !ok; if(ok) n++;
+  }
+  document.getElementById('cnt').textContent = n+'개 표시';
+}
+document.querySelectorAll('.controls .seg button[data-dir],.controls .seg button[data-mv]').forEach(b=>b.addEventListener('click',()=>{
+  const key = b.dataset.dir!==undefined?'dir':'mv';
+  state[key] = b.dataset[key];
+  b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b?'true':'false'));
+  apply();
+}));
+document.getElementById('q').addEventListener('input',e=>{state.q=e.target.value.trim().toLowerCase();apply();});
+seg.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b){ showRegion(+b.dataset.i); document.getElementById('region-sec').scrollIntoView({behavior:'smooth',block:'start'}); }});
+ov.addEventListener('click',e=>{ const tr=e.target.closest('tr.pick'); if(tr){ showRegion(+tr.dataset.i); document.getElementById('region-sec').scrollIntoView({behavior:'smooth',block:'start'}); }});
+// history
+document.querySelector('#histtbl tbody').innerHTML = (D.history||[]).slice().reverse().flatMap(h=>h.regions.map(r=>{
+  const t=r.sig[0];
+  return `<tr><td class="num">${h.end.slice(0,4)}.${h.end.slice(4)}</td><td class="num">${h.generated}</td><td>${r.name}</td><td class="r num">${fmt(r.n_codes)}</td><td class="r num">${fmtB(r.exp_total)}</td><td class="r num">${r.sig.length} (▲${r.sig.filter(s=>s.delta>0).length} ▼${r.sig.filter(s=>s.delta<0).length})</td><td>${t?`${t.top} · ${t.hs} ${nice(t)} ${t.dir==='exp'?'수출':'수입'} ${ratioTxt(t.ratio)}`:'—'}</td></tr>`;
+})).join('');
+const want = location.hash.match(/^#r(\d+)$/); const idx = want ? D.regions.findIndex(r=>r.code===want[1]) : -1;
+showRegion(idx>=0?idx:0);
+window.addEventListener('hashchange',()=>{ const w=location.hash.match(/^#r(\d+)$/); const i=w?D.regions.findIndex(r=>r.code===w[1]):-1; if(i>=0&&i!==state.region) showRegion(i); });
+</script>
